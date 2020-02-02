@@ -24,7 +24,7 @@ This plugin is intended to be used with Nexcloud only at this point in time. The
 
 This is also compatible with RCMCARDDAV 3.0.3 as I use it to sync my contacts with Nextcloud to Roundcube as well.
 
-For Roundcube 1.3 download ver 0.4 here https://github.com/texxasrulez/Caldav_Calendar/releases/tag/0.4
+For Roundcube 1.3 download ver 0.4 [here](https://github.com/texxasrulez/Caldav_Calendar/releases/tag/0.4)
 
 _________________________________________________________________________________________
 
@@ -82,10 +82,10 @@ These errors are persistent, albeit not too often, and show up in Roundcube's er
 * [29-Jan-2020 21:02:25 America/Los_Angeles] PHP Warning:  feof() expects parameter 1 to be resource, null given in /path_to_roundcube/plugins/calendar/lib/vendor/sabre/vobject/lib/Parser/MimeDir.php on line 249
 * [29-Jan-2020 21:02:25 -0800]: <179594f3> PHP Error: iCal data parse error: Error reading from input stream in /path_to_roundcube/plugins/libcalendaring on line 163 (POST /mail/?_task=calendar&_action=refresh)
 
-*Donations*
+:moneybag: **Donations** :moneybag:
 
-If you like this plugin and would like to give me a donation, I would appreciate it. 
-Zelle - Just send to texxasrulez@yahoo.com
-[Paypal](https://paypal.me/texxasrulez?locale.x=en_US) Click it to send
+If you use this plugin and would like to show your appreciation by buying me a cup of coffee, I surely would appreciate it. A regular cup of Joe is sufficient, but a Starbucks Coffee would be better ... \
+Zelle (Zelle is integrated within many major banks Mobile Apps by default) - Just send to texxasrulez at yahoo dot com \
+No Zelle in your banks mobile app, no problem, just click [Paypal](https://paypal.me/texxasrulez?locale.x=en_US) and I can make a Starbucks run ...
 
 I appreciate the interest in this plugin and hope all the best ...
