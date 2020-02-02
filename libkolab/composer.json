@@ -4,7 +4,7 @@
     "description": "Plugin to setup a basic environment for the interaction with a Kolab server.",
     "homepage": "https://github.com/texxasrulez/caldav_calendar",
     "license": "GPL-3.0-only",
-    "version": "0.6.0.2",
+    "version": "0.6.0.4",
     "authors": [
         {
             "name": "Thomas Bruederli",
