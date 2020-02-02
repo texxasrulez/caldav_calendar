@@ -1,8 +1,9 @@
 # Caldav Calendar Plugin for Roundcube
 
-**This is my first fork version and will pretty much remain as is except for issue fixes and maintenance.**
-I am going to concentrate most of my efforts on a new calendar. I have MAJOR plans for it and want on stable version (this Repo) and one I am going add some serious features and enhancements.\
-If you are a Computer Nerd like me and enjoy testing buggy on the edge software, then I suggest you try my experimental calendar, [Texas Edition](https://github.com/texxasrulez/caldav_calendar_te) \
+**This is my first fork version and will pretty much remain "As Is" except for issue fixes and maintenance.**
+
+I am going to concentrate most of my efforts on a new calendar. I have MAJOR plans for it and want to have a stable LTS version (this Repo) and one I am going add some serious feature enhancements.\
+If you are a Computer Nerd like me and enjoy testing buggy, on the edge software, then I suggest you try my experimental calendar, [Texas Edition](https://github.com/texxasrulez/caldav_calendar_te) 
 
 **IMPORTANT** If you are updating this plugin from < 0.5.x to 0.6.x, a clean install is required. Read the [Update Info](update_guide.md) page for details.
 
@@ -70,7 +71,7 @@ Otherwise, issues are always welcome but I do ask that you provide as detailed i
 
 **Random Color Quickie**
 
-Multiple Calendars saved with same color. To quickly get a random coloring, just import into database `UPDATE caldav_calendars SET color = substring(MD5(RAND()), -6);` after initial sync of calendars.
+Multiple Calendars saved with same color. To quickly get a random coloring, just import into database `UPDATE caldav_calendars SET color = substring(MD5(RAND()), -6);` after initial sync of calendars. There is a SQL Schema located /calendar/drivers/random_color_quickie.sql to help things along quicker.
 
 **Persistant Errors**
 
