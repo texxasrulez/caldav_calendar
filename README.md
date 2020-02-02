@@ -71,15 +71,6 @@ Otherwise, issues are always welcome but I do ask that you provide as detailed i
 
 Multiple Calendars saved with same color. To quickly get a random coloring, just import into database `UPDATE caldav_calendars SET color = substring(MD5(RAND()), -6);` after initial sync of calendars. There is a SQL Schema located /calendar/drivers/random_color_quickie.sql to help things along quicker.
 
-**Persistent Errors**
-
-These errors are persistent, albeit not too often, and show up in Roundcube's errors.log. It has no rhyme or reason for when they appear. 99% of the time when these do get logged, users will be unaware as the requested task will complete successfully. As far as I can tell, it has something to do with line endings \r\n which I am looking where it may or may not be used properly. So far, no joy ..
-
-* [29-Jan-2020 21:02:25 America/Los_Angeles] PHP Warning:  feof() expects parameter 1 to be resource, null given in /path_to_roundcube/plugins/calendar/lib/vendor/sabre/vobject/lib/Parser/MimeDir.php on line 245
-* [29-Jan-2020 21:02:25 America/Los_Angeles] PHP Warning:  fgets() expects parameter 1 to be resource, null given in /path_to_roundcube/plugins/calendar/lib/vendor/sabre/vobject/lib/Parser/MimeDir.php on line 247
-* [29-Jan-2020 21:02:25 America/Los_Angeles] PHP Warning:  feof() expects parameter 1 to be resource, null given in /path_to_roundcube/plugins/calendar/lib/vendor/sabre/vobject/lib/Parser/MimeDir.php on line 249
-* [29-Jan-2020 21:02:25 -0800]: <179594f3> PHP Error: iCal data parse error: Error reading from input stream in /path_to_roundcube/plugins/libcalendaring on line 163 (POST /mail/?_task=calendar&_action=refresh)
-
 :moneybag: **Donations** :moneybag:
 
 If you use this plugin and would like to show your appreciation by buying me a cup of coffee, I surely would appreciate it. A regular cup of Joe is sufficient, but a Starbucks Coffee would be better ... \
