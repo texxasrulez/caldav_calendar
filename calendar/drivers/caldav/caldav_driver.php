@@ -646,10 +646,10 @@ class caldav_driver extends calendar_driver
         if (!$event['allday']) {
 
 	    $orig_weekday = $event['start']->format('N');
-            $event['start'] = clone $event['start'];	            $event['start'] = clone $event['start'];
-            $event['start']->setTimezone($this->server_timezone);	            $event['start']->setTimezone($this->server_timezone);
-            $event['end'] = clone $event['end'];	            $event['end'] = clone $event['end'];
-            $event['end']->setTimezone($this->server_timezone);	            $event['end']->setTimezone($this->server_timezone);
+            $event['start'] = clone $event['start'];
+            $event['start']->setTimezone($this->server_timezone);
+            $event['end'] = clone $event['end'];
+            $event['end']->setTimezone($this->server_timezone);
 	    $weekday = $event['start']->format('N');
 	    if($orig_weekday != $weekday && !empty($event['recurrence']['BYDAY'])) {
 		$weekdays = array(
@@ -661,7 +661,7 @@ class caldav_driver extends calendar_driver
 		    'SA' => 5,
 		    'SU' => 6,
 		);
-                $vcaldays = array('MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU');
+        $vcaldays = array('MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU');
 		$vcaldays[$orig_weekday-1];
 		if ($weekday > $orig_weekday) {
 		    for ($i = 0; $i < $weekday - $orig_weekday; $i++) {

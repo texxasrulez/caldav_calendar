@@ -51,9 +51,7 @@ Your username and password must be the same for Nextcloud and Roundcube to work 
 	* Workarounds for All Day Recurring Events
 		- Do not check the "All Day" box, no issues. 
 			- If you just need that box checked, do so and save it. 
-			- Then edit the event and uncheck the box and save it. 
-			- Then, one more time, edit the event and check that box again and save it. 
-			- It will then appear properly the next time it is displayed and can be edited (as long as it is not the future instance you click to edit) and still display properly.
+			- Edit the event again and do nothing but click save. It should work properly now.
 
 **Help Wanted**
 
