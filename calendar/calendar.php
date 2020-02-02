@@ -2296,8 +2296,10 @@ if(count($cals) > 0){
     $event['end']   = preg_replace('/\s*\(.*\)/', '', $event['end']);
 
     // convert dates into DateTime objects in user's current timezone
-    $event['start']  = new DateTime($event['start'], $this->timezone);
-    $event['end']    = new DateTime($event['end'], $this->timezone);
+    if (!is_object($event['start']))
+      $event['start'] = new DateTime($event['start'], $this->timezone);
+    if (!is_object($event['end']))
+      $event['end'] = new DateTime($event['end'], $this->timezone);
     $event['allday'] = !empty($event['allDay']);
     unset($event['allDay']);
 
@@ -2850,10 +2852,10 @@ if(count($cals) > 0){
 
     // We search for writeable calendars in personal namespace by default
     $mode   = calendar_driver::FILTER_WRITEABLE | calendar_driver::FILTER_PERSONAL;
-    $result = $driver->get_event($event, $mode);
+    $result = $this->driver->get_event($event, $mode);
     // ... now check shared folders if not found
     if (!$result) {
-      $result = $driver->get_event($event, calendar_driver::FILTER_WRITEABLE | calendar_driver::FILTER_SHARED);
+      $result = $this->driver->get_event($event, calendar_driver::FILTER_WRITEABLE | calendar_driver::FILTER_SHARED);
       if ($result) {
         $mode |= calendar_driver::FILTER_SHARED;
       }
@@ -2882,7 +2884,7 @@ if(count($cals) > 0){
       && !$data['nosave']
       && ($response['action'] == 'rsvp' || $response['action'] == 'import')
     ) {
-      $calendars       = $driver->list_calendars($mode);
+      $calendars       = $this->driver->list_calendars($mode);
       $calendar_select = new html_select(array(
           'name'       => 'calendar',
           'id'         => 'itip-saveto',
@@ -2917,8 +2919,8 @@ if(count($cals) > 0){
       $day_end     = new Datetime(gmdate('Y-m-d 23:59', $data['date']), $this->lib->timezone);
 
       // get events on that day from the user's personal calendars
-      $calendars = $driver->list_calendars(calendar_driver::FILTER_PERSONAL);
-      $events = $driver->load_events($day_start->format('U'), $day_end->format('U'), null, array_keys($calendars));
+      $calendars = $this->driver->list_calendars(calendar_driver::FILTER_PERSONAL);
+      $events = $this->driver->load_events($day_start->format('U'), $day_end->format('U'), null, array_keys($calendars));
       usort($events, function($a, $b) { return $a['start'] > $b['start'] ? 1 : -1; });
 
       $before = $after = array();
@@ -3239,7 +3241,7 @@ if(count($cals) > 0){
       // find writeable calendar to store event
       $cal_id    = rcube_utils::get_input_value('_folder', rcube_utils::INPUT_POST);
       $dontsave  = $cal_id === '' && $event['_method'] == 'REQUEST';
-      $calendars = $driver->list_calendars($mode);
+      $calendars = $this->driver->list_calendars($mode);
       $calendar  = $calendars[$cal_id];
 
       // select default calendar except user explicitly selected 'none'
@@ -3374,7 +3376,7 @@ if(count($cals) > 0){
             // found matching attendee entry in both existing and new events
             if ($existing_attendee >= 0 && $event_attendee) {
               $existing['attendees'][$existing_attendee] = $event_attendee;
-              $success = $driver->update_attendees($existing, $update_attendees);
+              $success = $this->driver->update_attendees($existing, $update_attendees);
             }
             // update the entire attendees block
             else if (($event['sequence'] >= $existing['sequence'] || $event['changed'] >= $existing['changed']) && $event_attendee) {
@@ -3416,7 +3418,7 @@ if(count($cals) > 0){
             if ($status == 'declined' || $event['status'] == 'CANCELLED' || $event_attendee['role'] == 'NON-PARTICIPANT')
               $event['free_busy'] = 'free';
 
-            $success = $driver->edit_event($event);
+            $success = $this->driver->edit_event($event);
           }
           else if (!empty($status)) {
             $existing['attendees'] = $event['attendees'];
@@ -3466,7 +3468,7 @@ if(count($cals) > 0){
           // save to the selected/default calendar
           if (!$master) {
             $event['calendar'] = $calendar['id'];
-            $success = $driver->new_event($event);
+            $success = $this->driver->new_event($event);
           }
         }
         else if ($status == 'declined')
