@@ -1,0 +1,121 @@
+--- finediff.php.orig	2014-07-29 14:24:10.000000000 +0200
++++ finediff.php	2014-07-29 14:30:38.000000000 +0200
+@@ -234,25 +234,25 @@
+ 
+ 	public function renderDiffToHTML() {
+ 		$in_offset = 0;
+-		ob_start();
++		$html = '';
+ 		foreach ( $this->edits as $edit ) {
+ 			$n = $edit->getFromLen();
+ 			if ( $edit instanceof FineDiffCopyOp ) {
+-				FineDiff::renderDiffToHTMLFromOpcode('c', $this->from_text, $in_offset, $n);
++				$html .= FineDiff::renderDiffToHTMLFromOpcode('c', $this->from_text, $in_offset, $n);
+ 				}
+ 			else if ( $edit instanceof FineDiffDeleteOp ) {
+-				FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
++				$html .= FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
+ 				}
+ 			else if ( $edit instanceof FineDiffInsertOp ) {
+-				FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
++				$html .= FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
+ 				}
+ 			else /* if ( $edit instanceof FineDiffReplaceOp ) */ {
+-				FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
+-				FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
++				$html .= FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
++				$html .= FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
+ 				}
+ 			$in_offset += $n;
+ 			}
+-		return ob_get_clean();
++		return $html;
+ 		}
+ 
+ 	/**------------------------------------------------------------------------
+@@ -277,18 +277,14 @@
+ 	* Re-create the "To" string from the "From" string and an "Opcodes" string
+ 	*/
+ 	public static function renderToTextFromOpcodes($from, $opcodes) {
+-		ob_start();
+-		FineDiff::renderFromOpcodes($from, $opcodes, array('FineDiff','renderToTextFromOpcode'));
+-		return ob_get_clean();
++		return FineDiff::renderFromOpcodes($from, $opcodes, array('FineDiff','renderToTextFromOpcode'));
+ 		}
+ 
+ 	/**------------------------------------------------------------------------
+ 	* Render the diff to an HTML string
+ 	*/
+ 	public static function renderDiffToHTMLFromOpcodes($from, $opcodes) {
+-		ob_start();
+-		FineDiff::renderFromOpcodes($from, $opcodes, array('FineDiff','renderDiffToHTMLFromOpcode'));
+-		return ob_get_clean();
++		return FineDiff::renderFromOpcodes($from, $opcodes, array('FineDiff','renderDiffToHTMLFromOpcode'));
+ 		}
+ 
+ 	/**------------------------------------------------------------------------
+@@ -297,8 +293,9 @@
+ 	*/
+ 	public static function renderFromOpcodes($from, $opcodes, $callback) {
+ 		if ( !is_callable($callback) ) {
+-			return;
++			return '';
+ 			}
++		$out = '';
+ 		$opcodes_len = strlen($opcodes);
+ 		$from_offset = $opcodes_offset = 0;
+ 		while ( $opcodes_offset <  $opcodes_len ) {
+@@ -312,18 +309,19 @@
+ 				$n = 1;
+ 				}
+ 			if ( $opcode === 'c' ) { // copy n characters from source
+-				call_user_func($callback, 'c', $from, $from_offset, $n, '');
++				$out .= call_user_func($callback, 'c', $from, $from_offset, $n, '');
+ 				$from_offset += $n;
+ 				}
+ 			else if ( $opcode === 'd' ) { // delete n characters from source
+-				call_user_func($callback, 'd', $from, $from_offset, $n, '');
++				$out .= call_user_func($callback, 'd', $from, $from_offset, $n, '');
+ 				$from_offset += $n;
+ 				}
+ 			else /* if ( $opcode === 'i' ) */ { // insert n characters from opcodes
+-				call_user_func($callback, 'i', $opcodes, $opcodes_offset + 1, $n);
++				$out .= call_user_func($callback, 'i', $opcodes, $opcodes_offset + 1, $n);
+ 				$opcodes_offset += 1 + $n;
+ 				}
+ 			}
++		return $out;
+ 		}
+ 
+ 	/**
+@@ -665,24 +663,26 @@
+ 	*/
+ 	private static function renderToTextFromOpcode($opcode, $from, $from_offset, $from_len) {
+ 		if ( $opcode === 'c' || $opcode === 'i' ) {
+-			echo substr($from, $from_offset, $from_len);
++			return substr($from, $from_offset, $from_len);
+ 			}
++		return '';
+ 		}
+ 
+ 	private static function renderDiffToHTMLFromOpcode($opcode, $from, $from_offset, $from_len) {
+ 		if ( $opcode === 'c' ) {
+-			echo htmlentities(substr($from, $from_offset, $from_len));
++			return htmlentities(substr($from, $from_offset, $from_len));
+ 			}
+ 		else if ( $opcode === 'd' ) {
+ 			$deletion = substr($from, $from_offset, $from_len);
+ 			if ( strcspn($deletion, " \n\r") === 0 ) {
+ 				$deletion = str_replace(array("\n","\r"), array('\n','\r'), $deletion);
+ 				}
+-			echo '<del>', htmlentities($deletion), '</del>';
++			return '<del>' . htmlentities($deletion) . '</del>';
+ 			}
+ 		else /* if ( $opcode === 'i' ) */ {
+- 			echo '<ins>', htmlentities(substr($from, $from_offset, $from_len)), '</ins>';
++ 			return '<ins>' . htmlentities(substr($from, $from_offset, $from_len)) . '</ins>';
+ 			}
++		return '';
+ 		}
+ 	}
+ 
