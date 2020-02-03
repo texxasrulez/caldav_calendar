@@ -3027,9 +3027,9 @@ if(count($cals) > 0){
             $driver = $this->get_driver_by_cal($invitation['event']['calendar']);
 
             // save the event to his/her default calendar if not yet present
-            if (!$driver->get_event($this->event) && ($calendar = $this->get_default_calendar($invitation['event']['sensitivity']))) {
+            if (!$this->driver->get_event($this->event) && ($calendar = $this->get_default_calendar($invitation['event']['sensitivity']))) {
               $invitation['event']['calendar'] = $calendar['id'];
-              if ($driver->new_event($invitation['event']))
+              if ($this->driver->new_event($invitation['event']))
                 $this->rc->output->command('display_message', $this->gettext(array('name' => 'importedsuccessfully', 'vars' => array('calendar' => $calendar['name']))), 'confirmation');
             }
           }
