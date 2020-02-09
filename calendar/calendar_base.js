@@ -92,11 +92,14 @@ window.rcmail && rcmail.addEventListener('init', function(evt) {
 
     // register create-from-mail command to message_commands array
     if (rcmail.env.task == 'mail') {
-      rcmail.register_command('calendar-create-from-mail', function() { cal.create_from_mail(); });
-      rcmail.register_command('attachment-save-calendar', function() { cal.save_to_calendar(); });
+      rcmail.register_command('calendar-create-from-mail', function() { cal.create_from_mail() });
+      rcmail.register_command('attachment-save-calendar', function() { cal.save_to_calendar() });
+      rcmail.addEventListener('plugin.mail2event_dialog', function(p){ cal.mail2event_dialog(p) });
+      rcmail.addEventListener('plugin.unlock_saving', function(p){ cal.ui && cal.ui.unlock_saving(); });
 
       if (rcmail.env.action != 'show') {
         rcmail.env.message_commands.push('calendar-create-from-mail');
+        rcmail.add_element($('<a>'));
       }
       else {
         rcmail.enable_command('calendar-create-from-mail', true);

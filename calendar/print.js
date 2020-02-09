@@ -48,7 +48,7 @@ window.rcmail && rcmail.addEventListener('init', function(evt) {
       continue;
 
     source = $.extend({
-      url: "./?_task=calendar&_action=load_events&source=" + escape(id) + add_url,
+      url: "./?_task=calendar&_action=load_events&driver=" + driver + "&source=" + escape(id) + add_url,
       className: 'fc-event-cal-'+id,
       id: id
     }, rcmail.env.calendars[id]);

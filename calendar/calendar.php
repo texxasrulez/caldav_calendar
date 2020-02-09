@@ -665,7 +665,7 @@ class calendar extends rcube_plugin
       );
     }
 
-    if (!isset($no_override['calendar_default_alarm_type'])) {
+    if (!isset($no_override['calendar_default_alarm_type']) || !isset($no_override['calendar_default_alarm_offset'])) {
       if (!$p['current']) {
         $p['blocks']['view']['content'] = true;
         return $p;
@@ -717,7 +717,7 @@ class calendar extends rcube_plugin
       $field_id = 'rcmfd_default_calendar';
       $select_cal = new html_select(array('name' => '_default_calendar', 'id' => $field_id, 'is_escaped' => true));
       foreach($this->get_drivers() as $driver){
-        foreach ((array)$driver->list_calendars(false, true) as $id => $prop) {
+        foreach ((array)$driver->list_calendars($filter) as $id => $prop) {
           $select_cal->add($prop['name'], strval($id));
           if ($prop['default'])
             $default_calendar = $id;
@@ -1584,7 +1584,7 @@ if(count($cals) > 0){
       $start = $start->format('U');
     }
 
-    $counts = $driver->count_events(
+    $counts += $driver->count_events(
       rcube_utils::get_input_value('source', rcube_utils::INPUT_GET),
       $start,
       rcube_utils::get_input_value('end', rcube_utils::INPUT_GET)
@@ -1707,7 +1707,7 @@ if(count($cals) > 0){
     if ($this->rc->config->get('calendar_contact_birthdays') && $this->rc->config->get('calendar_birthdays_alarm_type') == 'DISPLAY') {
       $cache = $this->rc->get_cache('calendar.birthdayalarms', 'db');
 
-      foreach ($driver->load_birthday_events($time, $time + 86400 * 60) as $e) {
+      foreach ($driver->get_default_driver()->load_birthday_events($time, $time + 86400 * 60) as $e) {
         $alarm = libcalendaring::get_next_alarm($e);
 
         // overwrite alarm time with snooze value (or null if dismissed)
@@ -2507,6 +2507,22 @@ if(count($cals) > 0){
     return $sent;
   }
 
+  private function _get_freebusy_list($email, $start, $end)
+  {
+    $fblist = array();
+    foreach($this->get_drivers() as $driver){
+      if($driver->freebusy) {
+        $cur = $driver->get_freebusy_list($email, $start, $end);
+        if($cur) {
+          $fblist = array_merge($fblist, $cur);
+        }
+      }
+    }
+
+    if(sizeof($fblist) == 0) return false;
+    else return $fblist;
+  }
+
   /**
    * Echo simple free/busy status text for the given user and time range
    */
@@ -2958,15 +2974,15 @@ if(count($cals) > 0){
   function event_itip_remove()
   {
     $success  = false;
-    $uid      = rcube_utils::get_input_value('uid', rcube_utils::INPUT_POST);
+    $uid      = rcube_utils::get_input_value('_uid', rcube_utils::INPUT_POST);
     $instance = rcube_utils::get_input_value('_instance', rcube_utils::INPUT_POST);
     $savemode = rcube_utils::get_input_value('_savemode', rcube_utils::INPUT_POST);
     $listmode = calendar_driver::FILTER_WRITEABLE | calendar_driver::FILTER_PERSONAL;
 
     // search for event if only UID is given
-    if ($event = $driver->get_event(array('uid' => $uid, '_instance' => $instance), $listmode)) {
+    if ($event = $this->driver->get_event(array('uid' => $uid, '_instance' => $instance), $listmode)) {
       $event['_savemode'] = $savemode;
-      $success = $driver->remove_event($event, true);
+      $success = $this->driver->remove_event($event, true);
     }
 
     if ($success) {
@@ -3027,9 +3043,9 @@ if(count($cals) > 0){
             $driver = $this->get_driver_by_cal($invitation['event']['calendar']);
 
             // save the event to his/her default calendar if not yet present
-            if (!$this->driver->get_event($this->event) && ($calendar = $this->get_default_calendar($invitation['event']['sensitivity']))) {
+            if (!$driver->get_event($this->event) && ($calendar = $this->get_default_calendar($invitation['event']['sensitivity']))) {
               $invitation['event']['calendar'] = $calendar['id'];
-              if ($this->driver->new_event($invitation['event']))
+              if ($driver->new_event($invitation['event']))
                 $this->rc->output->command('display_message', $this->gettext(array('name' => 'importedsuccessfully', 'vars' => array('calendar' => $calendar['name']))), 'confirmation');
             }
           }
@@ -3381,7 +3397,7 @@ if(count($cals) > 0){
             // update the entire attendees block
             else if (($event['sequence'] >= $existing['sequence'] || $event['changed'] >= $existing['changed']) && $event_attendee) {
               $existing['attendees'][] = $event_attendee;
-              $success = $driver->update_attendees($existing, $update_attendees);
+              $success = $this->driver->update_attendees($existing, $update_attendees);
             }
             else if (!$event_attendee) {
               $error_msg = $this->gettext('errorunknownattendee');
@@ -3418,7 +3434,7 @@ if(count($cals) > 0){
             if ($status == 'declined' || $event['status'] == 'CANCELLED' || $event_attendee['role'] == 'NON-PARTICIPANT')
               $event['free_busy'] = 'free';
 
-            $success = $this->driver->edit_event($event);
+            $success = $driver->edit_event($event);
           }
           else if (!empty($status)) {
             $existing['attendees'] = $event['attendees'];
@@ -3468,7 +3484,7 @@ if(count($cals) > 0){
           // save to the selected/default calendar
           if (!$master) {
             $event['calendar'] = $calendar['id'];
-            $success = $this->driver->new_event($event);
+            $success = $driver->new_event($event);
           }
         }
         else if ($status == 'declined')
@@ -3509,36 +3525,6 @@ if(count($cals) > 0){
     }
 
     $this->rc->output->send();
-  }
-
-  /**
-   * Handler for calendar/itip-remove requests
-   */
-  function mail_itip_decline_reply()
-  {
-    $uid     = rcube_utils::get_input_value('_uid', rcube_utils::INPUT_POST);
-    $mbox    = rcube_utils::get_input_value('_mbox', rcube_utils::INPUT_POST);
-    $mime_id = rcube_utils::get_input_value('_part', rcube_utils::INPUT_POST);
-
-    if (($event = $this->lib->mail_get_itip_object($mbox, $uid, $mime_id, 'event')) && $event['_method'] == 'REPLY') {
-      $event['comment'] = rcube_utils::get_input_value('_comment', rcube_utils::INPUT_POST);
-
-      foreach ($event['attendees'] as $_attendee) {
-        if ($_attendee['role'] != 'ORGANIZER') {
-          $attendee = $_attendee;
-          break;
-        }
-      }
-
-      $itip = $this->load_itip();
-      if ($itip->send_itip_message($event, 'CANCEL', $attendee, 'itipsubjectcancel', 'itipmailbodycancel'))
-        $this->rc->output->command('display_message', $this->gettext(array('name' => 'sentresponseto', 'vars' => array('mailto' => $attendee['name'] ? $attendee['name'] : $attendee['email']))), 'confirmation');
-      else
-        $this->rc->output->command('display_message', $this->gettext('itipresponseerror'), 'error');
-    }
-    else {
-      $this->rc->output->command('display_message', $this->gettext('itipresponseerror'), 'error');
-    }
   }
 
   /**

@@ -678,7 +678,7 @@ class caldav_driver extends calendar_driver
 		}
 		$event['recurrence']['BYDAY'] = $byday;
 	    }
-        }		
+        }
 		
         // compose vcalendar-style recurrencue rule from structured data
         $rrule = $event['recurrence'] ? libcalendaring::to_rrule($event['recurrence']) : '';

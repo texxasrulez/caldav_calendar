@@ -151,7 +151,7 @@ $labels['futureevents'] = 'Future';
 $labels['showalarms'] = 'Show reminders';
 $labels['defaultalarmtype'] = 'Default reminder setting';
 $labels['defaultalarmoffset'] = 'Default reminder time';
-//$labels['alarmdisplayoption'] = 'Default Reminder';
+$labels['alarmdisplayoption'] = 'Default Reminder';
 
 // attendees
 $labels['attendee'] = 'Participant';
@@ -330,4 +330,21 @@ $labels['ical_auth_digest'] = 'iCal Basic Auth Login';
 $labels['auth'] = 'Authentication';
 $labels['login_with'] = 'Login with ';
 $labels['logout_from'] = 'Logout from ';
+
+// Audible Notifications
+$labels['notifications'] = 'Notifications';
+$labels['setting_alarm_sound'] = 'Notification sound';
+$labels['alarm_sound_aurora'] = 'Aurora';
+$labels['alarm_sound_bamboo'] = 'Bamboo';
+$labels['alarm_sound_bells'] = 'Bells';
+$labels['alarm_sound_chord'] = 'Chord';
+$labels['alarm_sound_circles'] = 'Circles';
+$labels['alarm_sound_glass'] = 'Glass';
+$labels['alarm_sound_maramba'] = 'Maramba';
+$labels['alarm_sound_metal'] = 'Metal';
+$labels['alarm_sound_ripple'] = 'Ripple';
+$labels['alarm_sound_startrek'] = 'Star Trek';
+$labels['alarm_sound_whistle'] = 'Whistle';
+$labels['alarm_sound_yoohoo'] = 'Yoohoo';
+$labels['play_sound'] = 'Play sound';
 ?>
