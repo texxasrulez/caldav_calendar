@@ -158,16 +158,18 @@ class libcalendaring extends rcube_plugin
         require_once __DIR__ . '/libvcalendar.php';
         return new libvcalendar();
     }
-
+	
     /**
      * Load iTip functions
      */
+/*
     public static function get_itip($domain = 'libcalendaring')
     {
         $self = self::get_instance();
         require_once __DIR__ . '/lib/libcalendaring_itip.php';
         return new libcalendaring_itip($self, $domain);
     }
+*/
 
     /**
      * Load recurrence computation engine

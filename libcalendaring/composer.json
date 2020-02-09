@@ -1,10 +1,10 @@
 {
-    "name": "texxasrulez/caldav_calendar/libcalendaring",
+    "name": "texxasrulez/caldav_calendar_te/libcalendaring",
     "type": "roundcube-plugin",
-    "description": "Library providing common functions for calendaring plugins.",
-    "homepage": "https://github.com/texxasrulez/caldav_calendar",
+    "description": "Library providing common functions for calendaring plugins. The _te stands for Texas Edition",
+    "homepage": "https://github.com/texxasrulez/caldav_calendar_te",
     "license": "GPL-3.0-only",
-    "version": "0.6.0.4",
+    "version": "0.6.0.2",
     "authors": [
         {
             "name": "Thomas Bruederli",
