@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `caldav_calendars` (
   `color` varchar(8) NOT NULL,
   `showalarms` tinyint(1) NOT NULL DEFAULT '1',
 
-  `caldav_url` varchar(255) NOT NULL,
+  `caldav_url` varchar(1000) NOT NULL,
   `caldav_tag` varchar(255) DEFAULT NULL,
   `caldav_user` varchar(255) DEFAULT NULL,
   `caldav_pass` varchar(1024) DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `caldav_events` (
   `sequence` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `start` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `end` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
-  `recurrence` varchar(255) DEFAULT NULL,
+  `recurrence` varchar(1000) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `location` varchar(255) NOT NULL DEFAULT '',
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `caldav_events` (
   `attendees` text DEFAULT NULL,
   `notifyat` datetime DEFAULT NULL,
 
-  `caldav_url` varchar(255) NOT NULL,
+  `caldav_url` varchar(1000) NOT NULL,
   `caldav_tag` varchar(255) DEFAULT NULL,
   `caldav_last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
