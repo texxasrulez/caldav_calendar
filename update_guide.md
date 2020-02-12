@@ -4,7 +4,7 @@
 
 A clean install is required, so I recommend the following procedures:
 
-**Begginner**
+**Beginner**
 
 * Login to webserver. (FTP is recommended method. SSH is fine if you are skilled in the SSH Arts. I would not use composer update method.)
 * Navigate to your /roundcube_directory/plugins
