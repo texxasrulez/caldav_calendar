@@ -24,7 +24,7 @@ A clean install is required, so I recommend the following procedures:
 
 
 **Expert**
-* Downlaod Latest [Release](https://github.com/texxasrulez/caldav_calendar/releases/latest) or Latest [commit](https://github.com/texxasrulez/caldav_calendar/archive/master.zip) , Dealers Choice
+* Download Latest [Release](https://github.com/texxasrulez/caldav_calendar/releases/latest) or Latest [commit](https://github.com/texxasrulez/caldav_calendar/archive/master.zip) , Dealers Choice
 * delete calendar, libcalendaring and libkolab (if there) directories 
 * Do yo thang
 * Enjoy
