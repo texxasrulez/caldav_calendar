@@ -1,7 +1,7 @@
 {
     "name": "texxasrulez/caldav_calendar/libkolab",
     "type": "roundcube-plugin",
-    "description": "Plugin to setup a basic environment for the interaction with a Kolab server.
+    "description": "Plugin to setup a basic environment for the interaction with a Kolab server.",
     "homepage": "https://github.com/texxasrulez/caldav_calendar",
     "license": "GPL-3.0-only",
     "version": "0.6.0.2",

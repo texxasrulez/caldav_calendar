@@ -33,8 +33,11 @@ $config['calendar_driver_default'] = "caldav";
 // default calendar view (agendaDay, agendaWeek, month)
 $config['calendar_default_view'] = "month";
 
-// Default calendar Save to
-// $config['default_save_calendar'] = 'Personal';
+//Default Sync time value in seconds, 600sec=10minutes
+$config['calendar_sync_period'] = "600";
+
+// Default calendar Save to - Personal is the default for Nextcloud
+$config['calendar_default_calendar'] = 'Personal';
 
 // show a birthdays calendar from the user's address book(s)
 $config['calendar_contact_birthdays'] = false;	// TODO
@@ -192,24 +195,30 @@ $config['calendar_crypt_key'] = "random_24_byte_string";
 // Enable debugging output for iCAL/CalDAV drivers
 $config['calendar_caldav_debug'] = false;
 $config['calendar_ical_debug'] = false;
+
 /*
-// OAuth2 provider for CalDAV auth
+ OAuth2 provider for CalDAV auth
+ For Google calendars and holiday calendars, you need a Google Calendar API key.
+ Get the key at the Google Developers Console (https://console.developers.google.com/apis/)
+ create or select an app, add the Calendar API and create a new
+ browser key.
+*/
 $config['calendar_oauth_providers'] = array(
 
     "key" => array(
         "name" => "Google OAuth2 Provider",
         "scope" => "https://www.googleapis.com/auth/calendar",
-        "json" => "/lib/vendor/oauth2/google_oauth.json"
-//    ),
-//
-//    "key" => array(
-//        "name" => "Google OAuth Provider",
-//        "scope" => "https://www.googleapis.com/auth/calendar",
-//        "client_id" => "some_string_from_your_google_account.apps.googleusercontent.com",
-//        "client_secret" => "your_app_secret",
-//        "authorize_endpoint" => "https://accounts.google.com/o/oauth2/v2/auth",
-//        "token_endpoint" => "https://www.domain.tld/mail/?_task=calendar="
-    )
+        "json" => "/lib/vendor/oauth2/google_oauth.json" // Rename google_oauth.json.dist to google_oauth.json
+    ) //,
+/*
+    "key" => array(
+        "name" => "Google OAuth Provider",
+        "scope" => "https://www.googleapis.com/auth/calendar",
+        "client_id" => "some_string_from_your_google_account.apps.googleusercontent.com",
+        "client_secret" => "your_app_secret",
+        "authorize_endpoint" => "https://accounts.google.com/o/oauth2/v2/auth",
+        "token_endpoint" => "https://www.domain.tld/mail/?_task=calendar="
+    ) */
 );
 
 */

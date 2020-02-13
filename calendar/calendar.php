@@ -92,6 +92,10 @@ class calendar extends rcube_plugin
     }
 
     $this->add_hook('user_delete', array($this, 'user_delete'));
+
+    if ($this->rc->task == 'calendar') {
+      $this->rc->output->set_env('refresh_interval', $this->rc->config->get('calendar_sync_period', 0));
+    }
   }
 
   /**
@@ -727,11 +731,25 @@ class calendar extends rcube_plugin
         'title' => html::label($field_id . 'value', rcube::Q($this->gettext('defaultcalendar'))),
         'content' => $select_cal->show($this->rc->config->get('calendar_default_calendar', $default_calendar)),
       );
+
+      $field_id = 'sync_period';
+      $input_value = new html_inputfield(array('name' => '_sync_period', 'id' => $field_id . 'value', 'size' => 4));
+      $p['blocks']['view']['options']['syncperiod'] = array(
+        'title' => html::label($field_id, rcube::Q($this->gettext('syncperiod'))),
+        'content' => $input_value->show($this->rc->config->get('calendar_sync_period', $sync_period)),
+      );
     }
 	
       $p['blocks']['view']['options']['defaultcalendar'] = array(
         'title' => html::label($field_id, rcube::Q($this->gettext('defaultcalendar'))),
         'content' => $select_cal->show($this->rc->config->get('calendar_default_calendar', $default_calendar)),
+      );
+
+      $field_id = 'sync_period';
+      $input_value = new html_inputfield(array('name' => '_sync_period', 'id' => $field_id . 'value', 'size' => 4));
+      $p['blocks']['view']['options']['syncperiod'] = array(
+        'title' => html::label($field_id, rcube::Q($this->gettext('syncperiod'))),
+        'content' => $input_value->show($this->rc->config->get('calendar_sync_period', $sync_period)),
       );
 
     if (!isset($no_override['calendar_show_weekno'])) {
@@ -977,6 +995,7 @@ if(count($cals) > 0){
         'calendar_first_hour'   		  => intval(rcube_utils::get_input_value('_first_hour', rcube_utils::INPUT_POST)),
         'calendar_work_start'   		  => intval(rcube_utils::get_input_value('_work_start', rcube_utils::INPUT_POST)),
         'calendar_work_end'     		  => intval(rcube_utils::get_input_value('_work_end', rcube_utils::INPUT_POST)),
+        'calendar_sync_period'     		  => intval(rcube_utils::get_input_value('_sync_period', rcube_utils::INPUT_POST)),
         'calendar_show_weekno'  		  => intval(rcube_utils::get_input_value('_show_weekno', rcube_utils::INPUT_POST)),
         'calendar_event_coloring'         => intval(rcube_utils::get_input_value('_event_coloring', rcube_utils::INPUT_POST)),
         'calendar_default_alarm_type'     => rcube_utils::get_input_value('_alarm_type', rcube_utils::INPUT_POST),

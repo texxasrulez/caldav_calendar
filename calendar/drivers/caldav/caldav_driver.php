@@ -48,7 +48,7 @@ class caldav_driver extends calendar_driver
     // Holds CalDAV sync clients
     private $sync_clients = array();
     // Min. time period to wait until CalDAV sync check.
-    private $sync_period = 10; // seconds
+    private $sync_period;
     // Indicates debug mode for CalDAV
     static private $debug = null;
     /**
@@ -81,6 +81,7 @@ class caldav_driver extends calendar_driver
         $this->db_calendars = $this->rc->config->get('db_table_caldav_calendars', $db->table_name($this->db_calendars));
         $this->db_attachments = $this->rc->config->get('db_table_caldav_attachments', $db->table_name($this->db_attachments));
         $this->crypt_key = $this->rc->config->get("calendar_crypt_key", "%E`c{2;<J2F^4_&._BxfQ<5Pf3qv!m{e");
+        $this->sync_period = $this->rc->config->get("calendar_sync_period");
         // Set debug state
         if(self::$debug === null)
             self::$debug = $this->rc->config->get('calendar_caldav_debug', False);

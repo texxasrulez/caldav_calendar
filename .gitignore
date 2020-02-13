@@ -49,3 +49,6 @@ Temporary Items
 # Files that I don't want sneaking past me
 config.inc.php
 google_oauth.json
+*.orig
+*.bak
+*.sgh
