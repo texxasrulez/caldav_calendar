@@ -47,11 +47,6 @@ Your username and password must be the same for Nextcloud and Roundcube to work 
 **Known Issues**
 
 * Will not create new calendar from Roundcube Calendar GUI.
-* Recurring events marked as "All Day Events" will be a day early the following instance of it.
-	* Workarounds for All Day Recurring Events
-		- Do not check the "All Day" box, no issues. 
-			- If you just need that box checked, do so and save it. 
-			- Edit the event again and do nothing but click save. It should work properly now.
 
 **Help Wanted**
 
