@@ -4,12 +4,12 @@
 
 A clean install is required, so I recommend the following procedures:
 
-**Begginner**
+**Beginner**
 
 * Login to webserver. (FTP is recommended method. SSH is fine if you are skilled in the SSH Arts. I would not use composer update method.)
 * Navigate to your /roundcube_directory/plugins
 * Rename folders/directories calendar, libcalendaring and libkolab (if present) to calendar2, libcalendaring2 and libkolab2 (if present)
-* Download the latest [Release](https://github.com/texxasrulez/caldav_calendar_te/releases/latest) for Caldav_Calendar.
+* Download the latest [Release](https://github.com/texxasrulez/caldav_calendar/releases/latest) for Caldav_Calendar.
 * Unzip contents
 * Upload folders calendar, libcalendaring and libkolab to /roundcube_directory/plugins/
 * Navigate to /roundcube_directory/plugins/ and rename config.inc.php.dist to config.inc.php and edit the URL's within config to match your Domain and Nextcloud install directory name as well as customize the many variables to your preferences. Use the same calendar_crypt_key from your original config.inc.php if keeping database tables.
@@ -24,7 +24,7 @@ A clean install is required, so I recommend the following procedures:
 
 
 **Expert**
-* Downlaod Latest [Release](https://github.com/texxasrulez/caldav_calendar_te/releases/latest) or Latest [commit](https://github.com/texxasrulez/caldav_calendar_te/archive/master.zip) , Dealers Choice
+* Download Latest [Release](https://github.com/texxasrulez/caldav_calendar/releases/latest) or Latest [commit](https://github.com/texxasrulez/caldav_calendar/archive/master.zip) , Dealers Choice
 * delete calendar, libcalendaring and libkolab (if there) directories 
 * Do yo thang
 * Enjoy
