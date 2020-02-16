@@ -3503,7 +3503,7 @@ if(count($cals) > 0){
           // save to the selected/default calendar
           if (!$master) {
             $event['calendar'] = $calendar['id'];
-            $success = $driver->new_event($event);
+            $success = $this->driver->new_event($event);
           }
         }
         else if ($status == 'declined')
