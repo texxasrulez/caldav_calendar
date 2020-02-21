@@ -3489,7 +3489,7 @@ if(count($cals) > 0){
                 }
 
                 $master['calendar'] = $event['calendar'] = $calendar['id'];
-                $success = $driver->new_event($master);
+                $success = $this->driver->new_event($master);
               }
               else {
                 $master = null;
