@@ -221,8 +221,6 @@ $config['calendar_oauth_providers'] = array(
     ) */
 );
 
-*/
-
 // Pre-installed calendars, added at first access to calendar section
 // Caldav driver is supported only
  $config['calendar_preinstalled_calendars'] = array(

@@ -187,10 +187,27 @@ class calendar extends rcube_plugin
       $preinstalled_calendars = $this->rc->config->get('calendar_preinstalled_calendars', FALSE);
       if ($preinstalled_calendars && is_array($preinstalled_calendars)) {
       
-          // expanding both caldav url and user with RC (imap) username
+
+          $username= $this->rc->get_user_name();
+          $rcmail = rcmail::get_instance();
+          $local = $rcmail->user->get_username('local');
+          $domain = $rcmail->user->get_username('domain');
+		  
           foreach ($preinstalled_calendars as $index => $cal){
-              $preinstalled_calendars[$index]['caldav_url'] = str_replace('%u', $this->rc->get_user_name(), $cal['caldav_url']); 
-              $preinstalled_calendars[$index]['caldav_user'] = str_replace('%u', $this->rc->get_user_name(), $cal['caldav_user']);
+              $url = $cal['caldav_url'];
+              $user = $cal['caldav_user'];
+
+              $url = str_replace('%u', $username, $url);
+              $user = str_replace('%u', $username, $user);
+
+              $url = str_replace('%l', $local, $url);
+              $user = str_replace('%l', $local, $user);
+
+              $url = str_replace('%d', $domain, $url);
+              $user = str_replace('%d', $domain, $user);
+
+              $preinstalled_calendars[$index]['caldav_url'] = $url;
+              $preinstalled_calendars[$index]['caldav_user'] = $user;
           }
         
           foreach ($this->get_drivers() as $driver_name => $driver) {

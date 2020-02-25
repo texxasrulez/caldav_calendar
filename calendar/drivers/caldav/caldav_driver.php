@@ -199,7 +199,13 @@ class caldav_driver extends calendar_driver
      */
     private function _db_create_calendar($prop)
     {
+			// randomize color of calendars on creation
+        $color=bin2hex(random_bytes(3));
+		
         $prop = $this->_expand_pass($prop);
+		
+		$prop['color']=$color;
+		
         $result = $this->rc->db->query(
             "INSERT INTO " . $this->db_calendars . "
        (user_id, name, color, showalarms, caldav_url, caldav_tag, caldav_user, caldav_pass, caldav_oauth_provider)
