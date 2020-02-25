@@ -57,7 +57,7 @@ Otherwise, issues are always welcome but I do ask that you provide as detailed i
 
 - [ ] Ability to add new calendar to Nextcloud from Roundcube Calendar GUI.
 - [ ] Oauth support. (TBD. My skills aren't the best. :frowning_face:  ....  I need some help
-- [ ] Assign random colors to autodiscover calendars.
+- [x] ~~Assign random colors to autodiscover calendars.~~ - Thank you @drlight17
 - [ ] Add sound notifications
 - [ ] Integrate a Caldav Enabled Tasklist plugin
 * User requests always welcome ... :smiley_face:
