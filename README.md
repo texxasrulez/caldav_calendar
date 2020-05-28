@@ -1,4 +1,4 @@
-# Caldav Calendar Plugin for Roundcube - LTS  
+# Caldav Calendar Plugin for Roundcube & NextCloud - LTS  
 
 **This is my first fork version and will pretty much remain "As Is" except for issue fixes and maintenance.**  
 
