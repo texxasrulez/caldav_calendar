@@ -3665,10 +3665,10 @@ if(count($cals) > 0){
       $event['title']       = trim($message->subject);
       $event['description'] = trim($message->first_text_part());
 
-      $this->load_driver();
+      $this->load_drivers();
 
       // add a reference to the email message
-      if ($msgref = $driver->get_message_reference($message->headers, $mbox)) {
+      if ($msgref = $this->driver->get_message_reference($message->headers, $mbox)) {
         $event['links'] = array($msgref);
       }
       // copy mail attachments to event
