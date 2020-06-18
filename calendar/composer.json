@@ -1,10 +1,10 @@
 {
     "name": "texxasrulez/caldav_calendar/calendar",
     "type": "roundcube-plugin",
-    "description": "CalDav Capable Calendar plugin for Roundcube forked from Kolab 3.5.2. The _te stands for Texas Edition",
+    "description": "CalDav Capable Calendar plugin for Roundcube forked from Kolab 3.5.2.",
     "homepage": "https://github.com/texxasrulez/caldav_calendar",
     "license": "GPL-3.0-only",
-    "version": "0.6.0.2",
+    "version": "0.6.0.3",
     "authors": [
         {
             "name": "Thomas Bruederli",

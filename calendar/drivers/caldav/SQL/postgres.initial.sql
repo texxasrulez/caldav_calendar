@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS "caldav_calendars" (
   "name" varchar(255) NOT NULL,
   "color" varchar(8) NOT NULL,
   "showalarms" SMALLINT NOT NULL DEFAULT '1',
-
   "caldav_url" varchar(1000) NOT NULL,
   "caldav_tag" varchar(255) DEFAULT NULL,
   "caldav_user" varchar(255) DEFAULT NULL,
@@ -111,7 +110,6 @@ CREATE TABLE IF NOT EXISTS "caldav_events" (
   "alarms" text NULL DEFAULT NULL,
   "attendees" text DEFAULT NULL,
   "notifyat" timestamp DEFAULT NULL,
-
   "caldav_url" varchar(1000) NOT NULL,
   "caldav_tag" varchar(255) DEFAULT NULL,
   "caldav_last_change" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -143,5 +141,3 @@ CREATE TABLE IF NOT EXISTS "caldav_attachments" (
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8 COLLATE utf8_general_ci */;
 
 ALTER SEQUENCE caldav_attachments_attachment_id_seq RENAME TO caldav_attachments_seq;
-
-INSERT INTO "system" ("name", "value") VALUES ('calendar-caldav-version', '2019010100');

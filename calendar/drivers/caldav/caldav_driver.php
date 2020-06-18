@@ -1978,7 +1978,7 @@ class caldav_driver extends calendar_driver
     {
         switch ($this->rc->db->db_provider) {
             case 'postgres':
-                return $field;
+                return "EXTRACT (EPOCH FROM $field)";
             default:
                 return "UNIX_TIMESTAMP($field)";
         }
