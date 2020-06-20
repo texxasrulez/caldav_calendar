@@ -4,7 +4,7 @@
 <title><roundcube:object name="pagetitle" /></title>
 <roundcube:include file="/includes/links.html" />
 </head>
-<body class="extwin calendar attachmentwin">
+<body class="extwin libkolab attachmentwin">
 
 <div id="header">
 <div id="topline" role="banner" aria-labelledby="aria-label-topnav">
@@ -53,12 +53,13 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-	if (window.rcube_splitter) {
-		new rcube_splitter({ id:'mailpartsplitterv', p1:'#partheader', p2:'#attachmentcontainer',
-			orientation:'v', relative:true, start:226, min:150, size:12}).init();
-	}
+    if (window.rcube_splitter) {
+        new rcube_splitter({ id:'mailpartsplitterv', p1:'#partheader', p2:'#attachmentcontainer',
+            orientation:'v', relative:true, start:226, min:150, size:12}).init();
+    }
 });
 
 </script>
+
 </body>
 </html>
