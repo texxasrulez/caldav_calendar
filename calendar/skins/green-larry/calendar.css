@@ -392,7 +392,7 @@ pre {
 	background-color: #354516;
 }
 
-#calendars .treelist li.selected > a.calname {
+#calendars .treelist li.selected > a.calendar {
 	font-weight: bold;
 }
 
