@@ -25,7 +25,6 @@
  * for the JavaScript code in this file.
  */
 
-
 /* calendar plugin printing code */
 window.rcmail && rcmail.addEventListener('init', function(evt) {
 
@@ -42,13 +41,14 @@ window.rcmail && rcmail.addEventListener('init', function(evt) {
 
   // create list of event sources AKA calendars
   var id, src, event_sources = [];
-  var add_url = '&mode=print' + (rcmail.env.search ? '&q='+escape(rcmail.env.search) : '');
+  var add_url = (rcmail.env.search ? '&q='+escape(rcmail.env.search) : '');
   for (id in rcmail.env.calendars) {
     if (!rcmail.env.calendars[id].active)
       continue;
 
-    source = $.extend({
-      url: "./?_task=calendar&_action=load_events&driver=" + driver + "&source=" + escape(id) + add_url,
+    var driver = rcmail.env.calendars[id].driver;
+	source = $.extend({
+      url: './?_task=calendar&_action=load_events&drivers=' + driver + '&source=' + escape(id) + add_url,
       className: 'fc-event-cal-'+id,
       id: id
     }, rcmail.env.calendars[id]);
@@ -172,11 +172,24 @@ window.rcmail && rcmail.addEventListener('init', function(evt) {
         });
       }
     },
-    viewRender: function(view) {
-      desc_elements = [];
+    viewDisplay: function(view) {
+      // remove hard-coded hight and make contents visible
+      window.setTimeout(function(){
+        if (view.name == 'table') {
+          $('div.fc-list-content').css('overflow', 'visible').height('auto');
+        }
+        else {
+          $('div.fc-agenda-divider')
+            .next().css('overflow', 'visible').height('auto')
+            .children('div').css('overflow', 'visible').height('auto');
+          }
+          // adjust fixed height if vertical day slots
+          var h = $('table.fc-agenda-slots:visible').height() + $('table.fc-agenda-allday:visible').height() + 4;
+          if (h) $('table.fc-agenda-days td.fc-widget-content').children('div').height(h);
+         }, 20);
     }
   });
-
+  
   // activate settings form
   $('#propdescription').change(function() {
     showdesc = this.checked;

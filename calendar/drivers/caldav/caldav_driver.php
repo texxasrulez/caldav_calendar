@@ -67,6 +67,7 @@ class caldav_driver extends calendar_driver
         self::debug_log($msg);
         $this->rc->output->show_message($msg, 'error');
     }
+
     /**
      * Default constructor
      */
@@ -87,6 +88,7 @@ class caldav_driver extends calendar_driver
             self::$debug = $this->rc->config->get('calendar_caldav_debug', False);
         $this->_read_calendars();
     }
+
     /**
      * Read available calendars for the current user and store them internally
      */

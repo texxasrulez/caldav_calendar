@@ -1,10 +1,10 @@
 {
-    "name": "texxasrulez/caldav_calendar/libkolab",
+    "name": "texxasrulez/caldav_calendar_te/libkolab",
     "type": "roundcube-plugin",
-    "description": "Plugin to setup a basic environment for the interaction with a Kolab server.",
-    "homepage": "https://github.com/texxasrulez/caldav_calendar",
+    "description": "Plugin to setup a basic environment for the interaction with a Kolab server. The _te stands for Texas Edition",
+    "homepage": "https://github.com/texxasrulez/caldav_calendar_te",
     "license": "GPL-3.0-only",
-    "version": "0.7.0.0",
+    "version": "0.6.0.2",
     "authors": [
         {
             "name": "Thomas Bruederli",

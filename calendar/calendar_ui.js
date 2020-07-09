@@ -563,6 +563,11 @@ function rcube_calendar_ui(settings)
         }
       });
 
+      var close_func = function(e) {
+          rcmail.command('menu-close', 'eventoptionsmenu', null, e);
+          $('.libcal-rsvp-replymode').hide();
+        };
+
       // open jquery UI dialog
       $dialog.dialog({
         modal: true,
@@ -575,21 +580,12 @@ function rcube_calendar_ui(settings)
             $dialog.parent().find('button:not(.ui-dialog-titlebar-close,.delete)').first().focus();
           }, 5);
         },
-        beforeClose: function(e) {
-          rcmail.command('menu-close', 'eventoptionsmenu', null, e);
-        },
         close: function(e) {
-          $dialog.dialog('destroy').attr('aria-hidden', 'true').hide();
-          $('.libcal-rsvp-replymode').hide();
-        },
-        dragStart: function(e) {
-          rcmail.command('menu-close', 'eventoptionsmenu', null, e);
-          $('.libcal-rsvp-replymode').hide();
-        },
-        resizeStart: function(e) {
-          rcmail.command('menu-close', 'eventoptionsmenu', null, e);
-          $('.libcal-rsvp-replymode').hide();
-        },
+          close_func(e);
+          $dialog.dialog('close');
+		},
+        dragStart: close_func,
+        resizeStart: close_func,
         buttons: buttons,
         minWidth: 320,
         width: 420
@@ -611,12 +607,12 @@ function rcube_calendar_ui(settings)
           .attr({href: '#', 'class': 'dropdown-link btn btn-link options', 'data-popup-pos': 'top'})
           .text(rcmail.gettext('eventoptions','calendar'))
           .click(function(e) {
-            return rcmail.command('menu-open','eventoptionsmenu', this, e)
+            return rcmail.command('menu-open','eventoptionsmenu', this, e);
           })
           .appendTo($dialog.parent().find('.ui-dialog-buttonset'));
       }
 
-      rcmail.enable_command('event-history', calendar.history)
+      rcmail.enable_command('event-history', calendar.history);
 
       rcmail.triggerEvent('calendar-event-dialog', {dialog: $dialog});
     };
@@ -3179,9 +3175,9 @@ function rcube_calendar_ui(settings)
           if (v.role != 'ORGANIZER') {
             v.status = 'NEEDS-ACTION';
           }
-        })
+        });
 
-        event_edit_dialog('new', copy);
+        setTimeout(function() { event_edit_dialog('new', copy); }, 50);
       }
     };
 
@@ -3469,7 +3465,7 @@ function rcube_calendar_ui(settings)
       var brightness, select, id = cal.id;
 
       me.calendars[id] = $.extend({
-        url: rcmail.url('calendar/load_events', { source: id }),
+        url: rcmail.url('calendar/load_events', { source: id, driver: cal.driver }),
         id: id
       }, cal);
 
