@@ -169,6 +169,7 @@ class caldav_driver extends calendar_driver
                 // Respect $props['name'] if only a single calendar was found e.g. no auto-discovery.
                 if(sizeof($calendars) > 1 || !isset($cal['name'])  || $cal['name'] == "")
                     $cal['name'] = $calendar['name'];
+                    $cal['color'] = $calendar['color'];
                 if (($obj_id = $this->_db_create_calendar($cal)) !== false) {
                     array_push($cal_ids, $obj_id);
                 } else $result = false;
@@ -201,12 +202,13 @@ class caldav_driver extends calendar_driver
      */
     private function _db_create_calendar($prop)
     {
-			// randomize color of calendars on creation
-        $color=bin2hex(random_bytes(3));
-		
+
+        // randomize color of calendars on creation
+        if (!isset($prop['color'])) {
+            $color=bin2hex(random_bytes(3));
+            $prop['color']=$color;
+        }		
         $prop = $this->_expand_pass($prop);
-		
-		$prop['color']=$color;
 		
         $result = $this->rc->db->query(
             "INSERT INTO " . $this->db_calendars . "
@@ -1751,6 +1753,7 @@ class caldav_driver extends calendar_driver
      *   caldav_pass: Password
      * @return False on error or an array with the following calendar props:
      *    name: Calendar display name
+     *    color: Calendar color
      *    href: Absolute calendar URL
      */
     private function _autodiscover_calendars($props)
@@ -1758,7 +1761,7 @@ class caldav_driver extends calendar_driver
         $calendars = array();
         $current_user_principal = array('{DAV:}current-user-principal');
         $calendar_home_set = array('{urn:ietf:params:xml:ns:caldav}calendar-home-set');
-        $cal_attribs = array('{DAV:}resourcetype', '{DAV:}displayname');
+        $cal_attribs = array('{DAV:}resourcetype', '{DAV:}displayname', '{http://apple.com/ns/ical/}calendar-color');
         $oauth_client = (isset($props["caldav_oauth_provider"]) && $props["caldav_oauth_provider"]) ? new oauth_client($this->rc, $props["caldav_oauth_provider"]) : null;
         if (!class_exists('caldav_client')) {
         	require_once ($this->cal->home.'/lib/caldav-client.php');
@@ -1780,9 +1783,14 @@ class caldav_driver extends calendar_driver
             if (array_key_exists ('{DAV:}displayname', $response)) {
                 $name = $response['{DAV:}displayname'];
             }
+            if (array_key_exists ('{http://apple.com/ns/ical/}calendar-color', $response)) {
+                $color = $response['{http://apple.com/ns/ical/}calendar-color'];
+                $color = substr( substr( $color, 1 ), 0, 6);
+            }
             array_push($calendars, array(
-                'name' => $name,
-                'href' => $caldav_url,
+                'name'  => $name,
+                'color' => $color,
+                'href'  => $caldav_url,
             ));
             return $calendars;
             // directly return given url as it is a calendar
@@ -1820,11 +1828,16 @@ class caldav_driver extends calendar_driver
                 else if ($key == '{DAV:}displayname') {
                     $name = $value;
                 }
+                if ($key == '{http://apple.com/ns/ical/}calendar-color') {
+                    $color = $value;
+                    $color = substr( substr( $color, 1 ), 0, 6);
+                }
             }
             if ($found) {
                 array_push($calendars, array(
-                    'name' => $name,
-                    'href' => $base_uri.$collection,
+                    'name'  => $name,
+                    'color' => $color,
+                    'href'  => $base_uri.$collection,
                 ));
             }
         }
