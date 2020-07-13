@@ -43,7 +43,8 @@ class DateTimeParser {
         if ($matches[7]==='Z' || is_null($tz)) {
             $tz = new DateTimeZone('UTC');
         }
-        $date = new DateTime($matches[1] . '-' . $matches[2] . '-' . $matches[3] . ' ' . $matches[4] . ':' . $matches[5] .':' . $matches[6], $tz);
+//        $date = new DateTime($matches[1] . '-' . $matches[2] . '-' . $matches[3] . ' ' . $matches[4] . ':' . $matches[5] .':' . $matches[6], $tz);
+        $date = new DateTime($matches[1] . '-' . $matches[2] . '-' . $matches[3] . ' ' . $matches[4] . ':' . $matches[5] .':' . $matches[6]); // Fixes All-Day Recurring Error
 
         // Still resetting the timezone, to normalize everything to UTC
         // $date->setTimeZone(new \DateTimeZone('UTC'));
@@ -71,7 +72,8 @@ class DateTimeParser {
             $tz = new DateTimeZone('UTC');
         }
 
-        $date = new DateTime($matches[1] . '-' . $matches[2] . '-' . $matches[3], $tz);
+//       $date = new DateTime($matches[1] . '-' . $matches[2] . '-' . $matches[3], $tz);
+        $date = new DateTime($matches[1] . '-' . $matches[2] . '-' . $matches[3]); // Fixes All-Day Recurruing Error
         return $date;
 
     }

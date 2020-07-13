@@ -41,7 +41,7 @@ Copy/FTP/Upload calendar, libcalendaring and libkolab folders to Roundcube Plugi
 
 ***VERY IMPORTANT***  
 
-Your username and password must be the same for Nextcloud and Roundcube to work properly. If you are a skilled Server Admin you should have no trouble configuring Roundcube and NextCloud to make your username needs possible.  My advice is just create your users in Nextcloud using the exact username and password required to login to your email server. You should have no issues.  
+Your username and password must be the same for Nextcloud and Roundcube to work properly. Also, must be run from same domain, no subdomains because of cross-scripting issues. If you are a skilled Server Admin you should have no trouble configuring Roundcube and NextCloud to make your username needs possible.  My advice is just create your users in Nextcloud using the exact username and password required to login to your email server. You should have no issues.  
 
 **Known Issues**  
 
