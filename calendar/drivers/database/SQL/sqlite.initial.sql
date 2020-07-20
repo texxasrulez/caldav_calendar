@@ -3,6 +3,7 @@
  *
  * Plugin to add a calendar to Roundcube.
  *
+ * @author Gene Hawkins <texxasrulez@yahoo.com>
  * @author Lazlo Westerhof
  * @author Thomas Bruederli
  * @author Albert Lee
@@ -12,7 +13,7 @@
  *
  **/
 
-CREATE TABLE calendars (
+CREATE TABLE IF NOT EXISTS calendars (
   calendar_id integer NOT NULL PRIMARY KEY,
   user_id integer NOT NULL default '0',
   name varchar(255) NOT NULL default '',
@@ -22,7 +23,7 @@ CREATE TABLE calendars (
     REFERENCES users(user_id)
 );
 
-CREATE TABLE events (
+CREATE TABLE IF NOT EXISTS events (
   event_id integer NOT NULL PRIMARY KEY,
   calendar_id integer NOT NULL default '0',
   recurrence_id integer NOT NULL default '0',
@@ -35,7 +36,7 @@ CREATE TABLE events (
   start datetime NOT NULL default '1000-01-01 00:00:00',
   end datetime NOT NULL default '1000-01-01 00:00:00',
   recurrence varchar(255) default NULL,
-  title varchar(255) NOT NULL,
+  title varbinary(128) NOT NULL,
   description text NOT NULL,
   location varchar(255) NOT NULL default '',
   categories varchar(255) NOT NULL default '',
@@ -52,7 +53,7 @@ CREATE TABLE events (
     REFERENCES calendars(calendar_id)
 );
 
-CREATE TABLE attachments (
+CREATE TABLE IF NOT EXISTS attachments (
   attachment_id integer NOT NULL PRIMARY KEY,
   event_id integer NOT NULL default '0',
   filename varchar(255) NOT NULL default '',
@@ -63,7 +64,7 @@ CREATE TABLE attachments (
     REFERENCES events(event_id)
 );
 
-CREATE TABLE itipinvitations (
+CREATE TABLE IF NOT EXISTS itipinvitations (
   token varchar(64) NOT NULL PRIMARY KEY,
   event_uid varchar(255) NOT NULL,
   user_id integer NOT NULL default '0',
@@ -76,4 +77,4 @@ CREATE TABLE itipinvitations (
 
 CREATE INDEX ix_itipinvitations_uid ON itipinvitations(user_id, event_uid);
 
-INSERT INTO system (name, value) VALUES ('calendar-database-version', '2015022700');
+INSERT INTO system (name, value) VALUES ('texxasrulez-caldav-version', '2020072000'');

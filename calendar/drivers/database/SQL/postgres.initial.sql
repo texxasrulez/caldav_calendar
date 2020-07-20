@@ -3,6 +3,7 @@
  *
  * Plugin to add a calendar to RoundCube.
  *
+ * @author Gene Hawkins <texxasrulez@yahoo.com>
  * @author Lazlo Westerhof
  * @author Albert Lee
  * @author Aleksander Machniak <machniak@kolabsys.com>
@@ -12,98 +13,87 @@
  *
  **/
 
+CREATE SEQUENCE calendars_seq;
 
-CREATE SEQUENCE calendars_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+CREATE TABLE IF NOT EXISTS IF NOT EXISTS calendars (
+  calendar_id int CHECK (calendar_id > 0) NOT NULL DEFAULT NEXTVAL ('calendars_seq'),
+  user_id int CHECK (user_id > 0) NOT NULL DEFAULT '0',
+  name varchar(255) NOT NULL,
+  color varchar(8) NOT NULL,
+  showalarms smallint NOT NULL DEFAULT '1',
+  PRIMARY KEY(calendar_id)
+ ,
+  CONSTRAINT fk_calendars_user_id FOREIGN KEY (user_id)
+    REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
-CREATE TABLE calendars (
-    calendar_id integer DEFAULT nextval('calendars_seq'::regclass) NOT NULL,
-    user_id integer NOT NULL
-        REFERENCES users (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    name varchar(255) NOT NULL,
-    color varchar(8) NOT NULL,
-    showalarms smallint NOT NULL DEFAULT 1,
-    PRIMARY KEY (calendar_id)
-);
+CREATE INDEX user_name_idx ON calendars (user_id, name);
 
-CREATE INDEX calendars_user_id_idx ON calendars (user_id, name);
+CREATE SEQUENCE events_seq;
 
+CREATE TABLE IF NOT EXISTS IF NOT EXISTS events (
+  event_id int CHECK (event_id > 0) NOT NULL DEFAULT NEXTVAL ('events_seq'),
+  calendar_id int CHECK (calendar_id > 0) NOT NULL DEFAULT '0',
+  recurrence_id int CHECK (recurrence_id > 0) NOT NULL DEFAULT '0',
+  uid varchar(255) NOT NULL DEFAULT '',
+  instance varchar(16) NOT NULL DEFAULT '',
+  isexception smallint NOT NULL DEFAULT '0',
+  created timestamp(0) NOT NULL DEFAULT '1000-01-01 00:00:00',
+  changed timestamp(0) NOT NULL DEFAULT '1000-01-01 00:00:00',
+  sequence int CHECK (sequence > 0) NOT NULL DEFAULT '0',
+  start timestamp(0) NOT NULL DEFAULT '1000-01-01 00:00:00',
+  end timestamp(0) NOT NULL DEFAULT '1000-01-01 00:00:00',
+  recurrence varchar(255) DEFAULT NULL,
+  title bytea NOT NULL,
+  description text NOT NULL,
+  location varchar(255) NOT NULL DEFAULT '',
+  categories varchar(255) NOT NULL DEFAULT '',
+  url varchar(255) NOT NULL DEFAULT '',
+  all_day smallint NOT NULL DEFAULT '0',
+  free_busy smallint NOT NULL DEFAULT '0',
+  priority smallint NOT NULL DEFAULT '0',
+  sensitivity smallint NOT NULL DEFAULT '0',
+  status varchar(32) NOT NULL DEFAULT '',
+  alarms text DEFAULT NULL,
+  attendees text DEFAULT NULL,
+  notifyat timestamp(0) DEFAULT NULL,
+  PRIMARY KEY(event_id)
+ ,
+  CONSTRAINT fk_events_calendar_id FOREIGN KEY (calendar_id)
+    REFERENCES calendars(calendar_id) ON DELETE CASCADE ON UPDATE CASCADE
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
-CREATE SEQUENCE events_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+CREATE INDEX uid_idx ON events (uid);
+CREATE INDEX recurrence_idx ON events (recurrence_id);
+CREATE INDEX calendar_notify_idx ON events (calendar_id,notifyat);
 
-CREATE TABLE events (
-    event_id integer DEFAULT nextval('events_seq'::regclass) NOT NULL,
-    calendar_id integer NOT NULL
-        REFERENCES calendars (calendar_id) ON UPDATE CASCADE ON DELETE CASCADE,
-    recurrence_id integer NOT NULL DEFAULT 0,
-    uid varchar(255) NOT NULL DEFAULT '',
-    instance varchar(16) NOT NULL DEFAULT '',
-    isexception smallint NOT NULL DEFAULT '0',
-    created timestamp without time zone DEFAULT now() NOT NULL,
-    changed timestamp without time zone DEFAULT now(),
-    sequence integer NOT NULL DEFAULT 0,
-    "start" timestamp without time zone DEFAULT now() NOT NULL,
-    "end" timestamp without time zone DEFAULT now() NOT NULL,
-    recurrence varchar(255) DEFAULT NULL,
-    title character varying(255) NOT NULL DEFAULT '',
-    description text NOT NULL DEFAULT '',
-    location character varying(255) NOT NULL DEFAULT '',
-    categories character varying(255) NOT NULL DEFAULT '',
-    url character varying(255) NOT NULL DEFAULT '',
-    all_day smallint NOT NULL DEFAULT 0,
-    free_busy smallint NOT NULL DEFAULT 0,
-    priority smallint NOT NULL DEFAULT 0,
-    sensitivity smallint NOT NULL DEFAULT 0,
-    status character varying(32) NOT NULL DEFAULT '',
-    alarms text DEFAULT NULL,
-    attendees text DEFAULT NULL,
-    notifyat timestamp without time zone DEFAULT NULL,
-    PRIMARY KEY (event_id)
-);
+CREATE SEQUENCE attachments_seq;
 
-CREATE INDEX events_calendar_id_notifyat_idx ON events (calendar_id, notifyat);
-CREATE INDEX events_uid_idx ON events (uid);
-CREATE INDEX events_recurrence_id_idx ON events (recurrence_id);
+CREATE TABLE IF NOT EXISTS IF NOT EXISTS attachments (
+  attachment_id int CHECK (attachment_id > 0) NOT NULL DEFAULT NEXTVAL ('attachments_seq'),
+  event_id int CHECK (event_id > 0) NOT NULL DEFAULT '0',
+  filename varchar(255) NOT NULL DEFAULT '',
+  mimetype varchar(255) NOT NULL DEFAULT '',
+  size int NOT NULL DEFAULT '0',
+  data longtext NOT NULL,
+  PRIMARY KEY(attachment_id),
+  CONSTRAINT fk_attachments_event_id FOREIGN KEY (event_id)
+    REFERENCES events(event_id) ON DELETE CASCADE ON UPDATE CASCADE
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
+CREATE TABLE IF NOT EXISTS IF NOT EXISTS itipinvitations (
+  token VARCHAR(64) NOT NULL,
+  event_uid VARCHAR(255) NOT NULL,
+  user_id int CHECK (user_id > 0) NOT NULL DEFAULT '0',
+  event TEXT NOT NULL,
+  expires TIMESTAMP(0) DEFAULT NULL,
+  cancelled SMALLINT CHECK (cancelled > 0) NOT NULL DEFAULT '0',
+  PRIMARY KEY(token)
+ ,
+  CONSTRAINT fk_itipinvitations_user_id FOREIGN KEY (user_id)
+    REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
-CREATE SEQUENCE attachments_seq
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
+CREATE INDEX uid_idx ON itipinvitations (user_id,event_uid);
 
-CREATE TABLE attachments (
-    attachment_id integer DEFAULT nextval('attachments_seq'::regclass) NOT NULL,
-    event_id integer NOT NULL
-        REFERENCES events (event_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    filename varchar(255) NOT NULL DEFAULT '',
-    mimetype varchar(255) NOT NULL DEFAULT '',
-    size integer NOT NULL DEFAULT 0,
-    data text NOT NULL DEFAULT '',
-    PRIMARY KEY (attachment_id)
-);
-
-CREATE INDEX attachments_user_id_idx ON attachments (event_id);
-
-
-CREATE TABLE itipinvitations (
-    token varchar(64) NOT NULL,
-    event_uid varchar(255) NOT NULL,
-    user_id integer NOT NULL
-        REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    event TEXT NOT NULL,
-    expires timestamp without time zone DEFAULT NULL,
-    cancelled smallint NOT NULL DEFAULT 0,
-    PRIMARY KEY (token)
-);
-
-CREATE INDEX itipinvitations_user_id_event_uid_idx ON itipinvitations (user_id, event_uid);
-
-INSERT INTO system (name, value) VALUES ('calendar-database-version', '2015022700');
+REPLACE INTO `system` (name, value) SELECT ('texxasrulez-caldav-version', '2020072000');

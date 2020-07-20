@@ -8,7 +8,7 @@
 
 CREATE TABLE IF NOT EXISTS IF NOT EXISTS `kolab_alarms` (
   `alarm_id` VARCHAR(255) NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
+  `user_id` cast(10 as int) UNSIGNED NOT NULL,
   `notifyat` DATETIME DEFAULT NULL,
   `dismissed` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY(`alarm_id`,`user_id`),
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS IF NOT EXISTS `kolab_alarms` (
 CREATE TABLE IF NOT EXISTS IF NOT EXISTS `itipinvitations` (
   `token` VARCHAR(64) NOT NULL,
   `event_uid` VARCHAR(255) NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `user_id` cast(10 as int) UNSIGNED NOT NULL DEFAULT '0',
   `event` TEXT NOT NULL,
   `expires` DATETIME DEFAULT NULL,
   `cancelled` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
@@ -29,4 +29,4 @@ CREATE TABLE IF NOT EXISTS IF NOT EXISTS `itipinvitations` (
     REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
-REPLACE INTO system (name, value) VALUES ('texxasrulez-kolab-version', '2020072000');
+REPLACE INTO system (name, value) SELECT ('texxasrulez-kolab-version', '2020072000');
