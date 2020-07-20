@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS calendars (
   name varchar(255) NOT NULL default '',
   color varchar(255) NOT NULL default '',
   showalarms tinyint(1) NOT NULL default '1',
-  CONSTRAINT fk_calendars_user_id FOREIGN KEY (user_id)
+  CONSTRAINT rc_calendars_user_id FOREIGN KEY (user_id)
     REFERENCES users(user_id)
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS events (
   alarms text default NULL,
   attendees text default NULL,
   notifyat datetime default NULL,
-  CONSTRAINT fk_events_calendar_id FOREIGN KEY (calendar_id)
+  CONSTRAINT rc_events_calendar_id FOREIGN KEY (calendar_id)
     REFERENCES calendars(calendar_id)
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS attachments (
   mimetype varchar(255) NOT NULL default '',
   size integer NOT NULL default '0',
   data text NOT NULL default '',
-  CONSTRAINT fk_attachment_event_id FOREIGN KEY (event_id)
+  CONSTRAINT rc_attachment_event_id FOREIGN KEY (event_id)
     REFERENCES events(event_id)
 );
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS itipinvitations (
   event text NOT NULL,
   expires datetime NOT NULL default '1000-01-01 00:00:00',
   cancelled tinyint(1) NOT NULL default '0',
-  CONSTRAINT fk_itipinvitations_user_id FOREIGN KEY (user_id)
+  CONSTRAINT rc_itipinvitations_user_id FOREIGN KEY (user_id)
     REFERENCES users(user_id)
 );
 

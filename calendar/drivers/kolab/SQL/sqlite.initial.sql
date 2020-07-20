@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS kolab_alarms (
   PRIMARY KEY(alarm_id,user_id)
 );
 
-CREATE INDEX ix_kolab_alarms_user_id ON kolab_alarms(user_id);
+CREATE INDEX rc_kolab_alarms_user_id ON kolab_alarms(user_id);
 
 CREATE TABLE IF NOT EXISTS itipinvitations (
   token VARCHAR(64) NOT NULL PRIMARY KEY,
@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS itipinvitations (
   cancelled TINYINT(3) NOT NULL DEFAULT '0'
 );
 
-CREATE INDEX ix_itipinvitations_uid ON itipinvitations(event_uid,user_id);
+CREATE INDEX rc_itipinvitations_uid ON itipinvitations(event_uid,user_id);
 
 INSERT INTO system (name, value) VALUES ('texxasrulez-kolab-version', '2020072000');

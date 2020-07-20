@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `caldav_calendars` (
 
   PRIMARY KEY(`calendar_id`),
   INDEX `caldav_user_name_idx` (`user_id`, `name`),
-  CONSTRAINT `fk_caldav_calendars_user_id` FOREIGN KEY (`user_id`)
+  CONSTRAINT `rc_caldav_calendars_user_id` FOREIGN KEY (`user_id`)
   REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
@@ -54,9 +54,9 @@ CREATE TABLE IF NOT EXISTS `caldav_events` (
   `start` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `end` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `recurrence` varchar(1000) DEFAULT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `location` varchar(255) NOT NULL DEFAULT '',
+  `title` varbinary(128) NOT NULL,
+  `description` varbinary(2048) NOT NULL,
+  `location` varbinary(2048) NOT NULL DEFAULT '',
   `categories` varchar(255) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
   `all_day` tinyint(1) NOT NULL DEFAULT '0',
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `caldav_events` (
   INDEX `caldav_uid_idx` (`uid`),
   INDEX `caldav_recurrence_idx` (`recurrence_id`),
   INDEX `caldav_calendar_notify_idx` (`calendar_id`,`notifyat`),
-  CONSTRAINT `fk_caldav_events_calendar_id` FOREIGN KEY (`calendar_id`)
+  CONSTRAINT `rc_caldav_events_calendar_id` FOREIGN KEY (`calendar_id`)
   REFERENCES `caldav_calendars`(`calendar_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
@@ -88,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `caldav_attachments` (
   `size` int(11) NOT NULL DEFAULT '0',
   `data` longtext NOT NULL,
   PRIMARY KEY(`attachment_id`),
-  CONSTRAINT `fk_caldav_attachments_event_id` FOREIGN KEY (`event_id`)
+  CONSTRAINT `rc_caldav_attachments_event_id` FOREIGN KEY (`event_id`)
   REFERENCES `caldav_events`(`event_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
-REPLACE INTO `system` (`name`, `value`) VALUES ('calendar-caldav-version', '2019010100');
+REPLACE INTO `system` (`name`, `value`) VALUES ('texxasrulez-calendar-caldav-version', '2020072000');

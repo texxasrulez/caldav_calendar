@@ -10,9 +10,9 @@
  * @copyright (c) 2010 Lazlo Westerhof - Netherlands
  * @copyright (c) 2014 Kolab Systems AG
  *
- **/
+ */
 
-CREATE TABLE IF NOT EXISTS calendars (
+CREATE TABLE calendars (
   [calendar_id] int CHECK ([calendar_id] > 0) NOT NULL IDENTITY,
   [user_id] int CHECK ([user_id] > 0) NOT NULL DEFAULT '0',
   [name] varchar(255) NOT NULL,
@@ -20,13 +20,13 @@ CREATE TABLE IF NOT EXISTS calendars (
   [showalarms] smallint NOT NULL DEFAULT '1',
   PRIMARY KEY([calendar_id])
  ,
-  CONSTRAINT [fk_calendars_user_id] FOREIGN KEY ([user_id])
+  CONSTRAINT [rc_calendars_user_id] FOREIGN KEY ([user_id])
     REFERENCES users([user_id]) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
 CREATE INDEX [user_name_idx] ON calendars ([user_id], [name]);
 
-CREATE TABLE IF NOT EXISTS events (
+CREATE TABLE events (
   [event_id] int CHECK ([event_id] > 0) NOT NULL IDENTITY,
   [calendar_id] int CHECK ([calendar_id] > 0) NOT NULL DEFAULT '0',
   [recurrence_id] int CHECK ([recurrence_id] > 0) NOT NULL DEFAULT '0',
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS events (
   [end] datetime2(0) NOT NULL DEFAULT '1000-01-01 00:00:00',
   [recurrence] varchar(255) DEFAULT NULL,
   [title] varbinary(128) NOT NULL,
-  [description] varchar(max) NOT NULL,
+  [description] varbinary(2048) NOT NULL,
   [location] varchar(255) NOT NULL DEFAULT '',
   [categories] varchar(255) NOT NULL DEFAULT '',
   [url] varchar(255) NOT NULL DEFAULT '',
@@ -48,13 +48,13 @@ CREATE TABLE IF NOT EXISTS events (
   [free_busy] smallint NOT NULL DEFAULT '0',
   [priority] smallint NOT NULL DEFAULT '0',
   [sensitivity] smallint NOT NULL DEFAULT '0',
-  [status] varchar(32) NOT NULL DEFAULT '',
+  [status] varchar(max) NOT NULL DEFAULT '',
   [alarms] varchar(max) DEFAULT NULL,
   [attendees] varchar(max) DEFAULT NULL,
   [notifyat] datetime2(0) DEFAULT NULL,
   PRIMARY KEY([event_id])
  ,
-  CONSTRAINT [fk_events_calendar_id] FOREIGN KEY ([calendar_id])
+  CONSTRAINT [rc_events_calendar_id] FOREIGN KEY ([calendar_id])
     REFERENCES calendars([calendar_id]) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
@@ -62,7 +62,7 @@ CREATE INDEX [uid_idx] ON events ([uid]);
 CREATE INDEX [recurrence_idx] ON events ([recurrence_id]);
 CREATE INDEX [calendar_notify_idx] ON events ([calendar_id],[notifyat]);
 
-CREATE TABLE IF NOT EXISTS attachments (
+CREATE TABLE attachments (
   [attachment_id] int CHECK ([attachment_id] > 0) NOT NULL IDENTITY,
   [event_id] int CHECK ([event_id] > 0) NOT NULL DEFAULT '0',
   [filename] varchar(255) NOT NULL DEFAULT '',
@@ -70,11 +70,11 @@ CREATE TABLE IF NOT EXISTS attachments (
   [size] int NOT NULL DEFAULT '0',
   [data] varchar(max) NOT NULL,
   PRIMARY KEY([attachment_id]),
-  CONSTRAINT [fk_attachments_event_id] FOREIGN KEY ([event_id])
+  CONSTRAINT [rc_attachments_event_id] FOREIGN KEY ([event_id])
     REFERENCES events([event_id]) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 
-CREATE TABLE IF NOT EXISTS itipinvitations (
+CREATE TABLE itipinvitations (
   [token] VARCHAR(64) NOT NULL,
   [event_uid] VARCHAR(255) NOT NULL,
   [user_id] int CHECK ([user_id] > 0) NOT NULL DEFAULT '0',
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS itipinvitations (
   [cancelled] SMALLINT CHECK ([cancelled] > 0) NOT NULL DEFAULT '0',
   PRIMARY KEY([token])
  ,
-  CONSTRAINT [fk_itipinvitations_user_id] FOREIGN KEY ([user_id])
+  CONSTRAINT [rc_itipinvitations_user_id] FOREIGN KEY ([user_id])
     REFERENCES users([user_id]) ON DELETE CASCADE ON UPDATE CASCADE
 ) /*!40000 ENGINE=INNODB */ /*!40101 CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
 

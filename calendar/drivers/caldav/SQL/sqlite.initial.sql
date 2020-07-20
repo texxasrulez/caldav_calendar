@@ -1,4 +1,3 @@
-
 PRAGMA journal_mode = MEMORY;
 PRAGMA synchronous = OFF;
 PRAGMA foreign_keys = OFF;
@@ -39,8 +38,8 @@ CREATE TABLE IF NOT EXISTS `caldav_events` (
 `start` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
 `end` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
 `recurrence` TEXT DEFAULT NULL,
-`title` TEXT NOT NULL,
-`description` text NOT NULL,
+`title` varbinary(128) NOT NULL,
+`description` varbinary(2048) NOT NULL,
 `location` TEXT NOT NULL DEFAULT '',
 `categories` TEXT NOT NULL DEFAULT '',
 `url` TEXT NOT NULL DEFAULT '',
@@ -74,11 +73,7 @@ PRIMARY KEY(`attachment_id`),
 FOREIGN KEY (`event_id`)
 REFERENCES `caldav_events`(`event_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-REPLACE INTO `system` (`name`, `value`) VALUES ('calendar-caldav-version', '2019010100');
-
-
-
-
+REPLACE INTO `system` (`name`, `value`) VALUES ('texxasrulez-caldav_calendar', '2020072000');
 
 COMMIT;
 PRAGMA ignore_check_constraints = ON;
