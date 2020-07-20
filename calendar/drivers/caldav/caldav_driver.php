@@ -169,7 +169,7 @@ class caldav_driver extends calendar_driver
                 // Respect $props['name'] if only a single calendar was found e.g. no auto-discovery.
                 if(sizeof($calendars) > 1 || !isset($cal['name'])  || $cal['name'] == "")
                     $cal['name'] = $calendar['name'];
-                    $cal['color'] = $calendar['color'];
+					$cal['color'] = $calendar['color'];
                 if (($obj_id = $this->_db_create_calendar($cal)) !== false) {
                     array_push($cal_ids, $obj_id);
                 } else $result = false;
@@ -202,12 +202,12 @@ class caldav_driver extends calendar_driver
      */
     private function _db_create_calendar($prop)
     {
-
         // randomize color of calendars on creation
         if (!isset($prop['color'])) {
             $color=bin2hex(random_bytes(3));
             $prop['color']=$color;
-        }		
+        }
+		
         $prop = $this->_expand_pass($prop);
 		
         $result = $this->rc->db->query(
@@ -767,6 +767,13 @@ class caldav_driver extends calendar_driver
             foreach ($event['attachments'] as $attachment) {
                 $this->add_attachment($attachment, $event['id']);
                 unset($attachment);
+            }
+        }
+
+        // remove attachments
+        if ($success && !empty($event['deleted_attachments'])) {
+            foreach ($event['deleted_attachments'] as $attachment) {
+                $this->remove_attachment($attachment, $event['id']);
             }
         }
         if ($success) {
@@ -1448,7 +1455,7 @@ class caldav_driver extends calendar_driver
             $attendees = json_decode($s_attendees, true);
         } // decode the old serialization format
         else {
-            foreach (explode("\r\n", $event['attendees']) as $line) {
+            foreach (explode("\n", $event['attendees']) as $line) {
                 $att = array();
                 foreach (rcube_utils::explode_quoted_string(';', $line) as $prop) {
                     list($key, $value) = explode("=", $prop);
@@ -1563,7 +1570,7 @@ class caldav_driver extends calendar_driver
         if(isset($calendar["caldav_oauth_provider"]) && ($provider = oauth_client::get_provider($calendar["caldav_oauth_provider"]) !== false)){
             array_push($oauth2_buttons, new html_inputfield(array(
                 "type" => "button",
-                "class" => "button",
+                "class" => "propform",
                 "onclick" => "", // TODO: Do s.th.
                 "value" => $this->cal->gettext("logout_from").$provider["name"]
             )));
@@ -1586,7 +1593,7 @@ class caldav_driver extends calendar_driver
         if (is_array($hidden_fields)) {
             foreach ($hidden_fields as $field) {
                 $hiddenfield = new html_hiddenfield($field);
-                $this->form_html .= $hiddenfield->show() . "\r\n";
+                $this->form_html .= $hiddenfield->show() . "\n";
             }
         }
         // Create form output
@@ -1596,7 +1603,7 @@ class caldav_driver extends calendar_driver
                 foreach ($tab['fieldsets'] as $fieldset) {
                     $subcontent = $this->get_form_part($fieldset);
                     if ($subcontent) {
-                        $content .= html::tag('fieldset', null, html::tag('legend', null, rcube::Q($fieldset['name'])) . $subcontent) ."\r\n";
+                        $content .= html::tag('fieldset', null, html::tag('legend', null, rcube::Q($fieldset['name'])) . $subcontent) ."\n";
                     }
                 }
             }
@@ -1604,7 +1611,7 @@ class caldav_driver extends calendar_driver
                 $content = $this->get_form_part($tab);
             }
             if ($content) {
-                $this->form_html .= html::tag('fieldset', null, html::tag('legend', null, rcube::Q($tab['name'])) . $content) ."\r\n";
+                $this->form_html .= html::tag('fieldset', null, html::tag('legend', null, rcube::Q($tab['name'])) . $content) ."\n";
             }
         }
         // Parse form template for skin-dependent stuff
@@ -1753,7 +1760,7 @@ class caldav_driver extends calendar_driver
      *   caldav_pass: Password
      * @return False on error or an array with the following calendar props:
      *    name: Calendar display name
-     *    color: Calendar color
+	 *    color: Calendar color
      *    href: Absolute calendar URL
      */
     private function _autodiscover_calendars($props)
@@ -1782,15 +1789,15 @@ class caldav_driver extends calendar_driver
             $name = '';
             if (array_key_exists ('{DAV:}displayname', $response)) {
                 $name = $response['{DAV:}displayname'];
-            }
+			}
             if (array_key_exists ('{http://apple.com/ns/ical/}calendar-color', $response)) {
                 $color = $response['{http://apple.com/ns/ical/}calendar-color'];
                 $color = substr( substr( $color, 1 ), 0, 6);
             }
             array_push($calendars, array(
-                'name'  => $name,
+                'name' => $name,
                 'color' => $color,
-                'href'  => $caldav_url,
+                'href' => $caldav_url,
             ));
             return $calendars;
             // directly return given url as it is a calendar
@@ -1835,9 +1842,9 @@ class caldav_driver extends calendar_driver
             }
             if ($found) {
                 array_push($calendars, array(
-                    'name'  => $name,
+                    'name' => $name,
                     'color' => $color,
-                    'href'  => $base_uri.$collection,
+                    'href' => $base_uri.$collection,
                 ));
             }
         }
