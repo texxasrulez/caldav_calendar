@@ -33,11 +33,5 @@
         "roundcube/plugin-installer": ">=0.1.3",
         "texxasrulez/caldav_calendar_te/libcalendaring": ">=3.4.0",
         "texxasrulez/caldav_calendar_te/libkolab": ">=3.4.0"
-    },
-     "extra": {
-        "roundcube": {
-            "min-version": "1.4.0",
-            "sql-dir": "drivers/database/SQL"
-        }
     }
 }
