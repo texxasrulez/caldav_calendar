@@ -1773,7 +1773,8 @@ class caldav_driver extends calendar_driver
         if (!class_exists('caldav_client')) {
         	require_once ($this->cal->home.'/lib/caldav-client.php');
         }
-        $caldav = new caldav_client($props["caldav_url"], $props["caldav_user"], $props["caldav_pass"]);
+        $auth_type = isset($props["caldav_auth_type"]) ? $props["caldav_auth_type"] : null;
+        $caldav = new caldav_client($props["caldav_url"], $props["caldav_user"], $props["caldav_pass"], $auth_type);
         $tokens = parse_url($props["caldav_url"]);
         $base_uri = $tokens['scheme']."://".$tokens['host'].($tokens['port'] ? ":".$tokens['port'] : null);
         $caldav_url = $props["caldav_url"];

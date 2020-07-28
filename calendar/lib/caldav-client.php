@@ -42,7 +42,7 @@ class caldav_client extends Sabre\DAV\Client
      * @param string Username for HTTP basic auth.
      * @param string Password for HTTP basic auth.
      */
-    public function __construct($uri, $user = null, $pass = null)
+    public function __construct($uri, $user = null, $pass = null, $auth_type)
     {
 
         // Include libvcalendar on demand ...
@@ -57,8 +57,12 @@ class caldav_client extends Sabre\DAV\Client
 
         $settings = array(
             'baseUri' => $this->base_uri,
-            'authType' => Sabre\DAV\Client::AUTH_BASIC
         );
+	if ($auth_type == 'digest') {
+            $settings['authType'] = Sabre\DAV\Client::AUTH_DIGEST;
+	} else if ($auth_type == 'basic') {
+            $settings['authType'] = Sabre\DAV\Client::AUTH_BASIC;
+	}
 
         if ($user) $settings['userName'] = $user;
         if ($pass) $settings['password'] = $pass;
