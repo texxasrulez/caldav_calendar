@@ -9,8 +9,8 @@ If you are a Computer Nerd like me and enjoy testing buggy, on the edge software
 If you are updating this plugin from < 0.5.x to 0.6.x, a clean install is required. Read the [Update Info](https://github.com/texxasrulez/caldav_calendar/blob/master/update_guide.md) page for details.  
 
 **Tested using**
-* Roundcube v1.4.2
-* Nextcloud v18.0
+* Roundcube v1.4.7
+* Nextcloud v19.0
 * PHP v7.2.24
 * MySQL Server v5.5.60
 
@@ -52,14 +52,24 @@ Your username and password must be the same for Nextcloud and Roundcube to work 
 If anyone would like to help out and make oauth and other features work, I would truly appreciate it.  
 Otherwise, issues are always welcome but I do ask that you provide as detailed info as you can ie, Roundcube logs, system logs, OS info and any other pertinent information that you think can be helpful. On generic issues given without any of the previously requested info will delay any help I can offer you. I appreciate your understanding I do thank you ...  
 
-**Wishlist**  
 
-- [ ] Ability to add new calendar to Nextcloud from Roundcube Calendar GUI.
-- [ ] Oauth support. (TBD. My skills aren't the best. :frowning_face:  ....  I need some help
-- [x] ~~Assign random colors to autodiscover calendars.~~ - Thank you @drlight17
-- [ ] Add sound notifications
-- [ ] Integrate a Caldav Enabled Tasklist plugin
-* User requests always welcome ... :smiley_face:
+**New Features**
+
+- utf8mb4 Support is now available. Emoji's within Calendar Title, Description and Locations are supported.
+- Randomly generated Colors for calendars upon sync.
+- Can now specify the time frame (in seconds) interval to sync your calendar.
+
+**Wishlist**
+
+- [ ] Add the ability to create new calendar within Roundcube Calendar GUI.
+- [ ] Oauth support for a wider range of calendar choices. (Probably will take me a month of Sundays as my skills aren't the best. :frowning_face:  ....  I need some help
+- [ ] Add a preview / agenda list in main Mail Tab within the left side column at the bottom.
+- [x] ~~Assign random colors upon initial sync of calendars.~~ - Thank you @drlight17
+- [ ] Add sound notifications.
+- [ ] Integrate a Caldav Enabled Tasklist plugin.
+- [x] ~~Add Emoticon Support.~~ @texxasrulez
+- [x] ~~Remove mcrypt and replace with openssl.~~ Thank you @MAT-WEISS-2017
+* User feature requests are always welcome but I cannot guarantee if I can pull it off ... :relaxed:
 
 :moneybag: **Donations** :moneybag:  
 
