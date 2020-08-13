@@ -166,6 +166,9 @@ $config['calendar_itip_smtp_user'] = '%u';
 // SMTP password used to send (anonymous) itip messages
 $config['calendar_itip_smtp_pass'] = '%p';
 
+// cut 'username_domain' from username und URL - @MAT-WEISS-2017
+$config['cut_username_domain'] = false;
+
 // show virtual invitation calendars (Kolab driver only)
 $config['kolab_invitation_calendars'] = false;
 

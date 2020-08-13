@@ -1,4 +1,8 @@
+# Archived - No More Development on this Calendar  
+
 # Caldav Calendar Plugin for Roundcube & NextCloud - LTS  
+
+I am concentrating on one version from now on and that can be found [here](https://github.com/texxasrulez/calendar)  
 
 **This is my first fork version and will pretty much remain "As Is" except for issue fixes and maintenance.**  
 

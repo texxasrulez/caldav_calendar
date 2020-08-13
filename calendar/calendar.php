@@ -208,6 +208,13 @@ class calendar extends rcube_plugin
 
               $preinstalled_calendars[$index]['caldav_url'] = $url;
               $preinstalled_calendars[$index]['caldav_user'] = $user;
+
+              // by @MAT-WEISS-2017
+              if ($this->rc->config->get('cut_username_domain', true)) {
+                   $webmail_domain = '@' . $this->rc->config->get('username_domain', FALSE);
+                   $preinstalled_calendars[$index]['caldav_url'] = str_replace($webmail_domain, '', $preinstalled_calendars[$index]['caldav_url']);
+                   $preinstalled_calendars[$index]['caldav_user'] = str_replace($webmail_domain, '', $preinstalled_calendars[$index]['caldav_user']);
+             }
           }
         
           foreach ($this->get_drivers() as $driver_name => $driver) {
